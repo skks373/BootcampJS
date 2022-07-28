@@ -1,33 +1,45 @@
-import datastore from "../datastore.js";
-import connection from "../db/index.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const getAll = async () => {
-  const users = await connection.query('SELECT * FROM users');
-  return users[0];
+  const users = await prisma.user.findMany()
+  return users;
 };
 
 const getUser = async (id) => {
-  const user = await connection.query(`SELECT * FROM users WHERE id = ${id}`);
-  return user[0][0];
+  const user = await prisma.user.findUnique({
+    where: {
+      id
+    }
+  })
+  return user;
 };
 
 const addUser = async (userInfo) => {
-  await connection.query(`INSERT INTO users SET ?`, [userInfo])
-  return "User added"
+  const user = await prisma.user.create({
+    data: { ...userInfo }
+  });
+  return user;
 };
 
 const updateUser = async (id, userInfo) => {
-  const existingUser = await connection.query(`SELECT * FROM users WHERE id = ${id}`);
-  if (existingUser) {
-    await connection.query(`UPDATE users set ? WHERE id = ${id}`, [userInfo]);
-    return "User updated";
-  }
-  return "User not found";
+  const user = await prisma.user.update({
+    where: {
+      id: id
+    },
+    data: { ...userInfo }
+  })
+  return user;
 };
 
 const deleteUser = async (id) => {
-  const userDeleted = await connection.query(`DELETE FROM USERS WHERE id = ${id}`);
-  return userDeleted;
+  const user = await prisma.user.delete({
+    where: {
+      id: id
+    }
+  });
+  return user;
 };
 
 export default { getAll, getUser, deleteUser, addUser, updateUser };
