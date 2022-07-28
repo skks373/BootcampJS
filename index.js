@@ -2,8 +2,6 @@ import dotenv from "dotenv";
 import express from "express";
 import errorsMiddleware from "./src/middleware/errorsMiddleware.js";
 import usersRouter from "./src/routes/userRoutes.js";
-import connection from "./src/db/index.js";
-
 dotenv.config();
 
 const app = express();
