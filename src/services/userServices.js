@@ -1,53 +1,33 @@
 import datastore from "../datastore.js";
 import connection from "../db/index.js";
 
-const filterById = (id) => {
-  return datastore.filter((user) => user.id === id);
-};
-
-const indexOfUser = (id) => {
-  return datastore.indexOf(filterById(id)[0]);
-};
-
 const getAll = async () => {
-  return datastore;
+  const users = await connection.query('SELECT * FROM users');
+  return users[0];
 };
 
 const getUser = async (id) => {
-  return filterById(id)[0];
+  const user = await connection.query(`SELECT * FROM users WHERE id = ${id}`);
+  return user[0][0];
 };
 
 const addUser = async (userInfo) => {
-  const newId = datastore[datastore.length - 1].id + 1;
-
-
-  datastore.push({
-    id: newId,
-    ...userInfo,
-  });
-
-  return datastore;
+  await connection.query(`INSERT INTO users SET ?`, [userInfo])
+  return "User added"
 };
 
 const updateUser = async (id, userInfo) => {
-  const index = indexOfUser(id);
-
-  if (index !== -1) {
-    datastore[index] = { id: datastore[index].id, ...userInfo };
-    return datastore;
-  } else {
-    return "User not found";
+  const existingUser = await connection.query(`SELECT * FROM users WHERE id = ${id}`);
+  if (existingUser) {
+    await connection.query(`UPDATE users set ? WHERE id = ${id}`, [userInfo]);
+    return "User updated";
   }
+  return "User not found";
 };
 
 const deleteUser = async (id) => {
-  const index = indexOfUser(id);
-  if (index !== -1) {
-    datastore.splice(index, 1);
-    return "User deleted";
-  } else {
-    return "User not found";
-  }
+  const userDeleted = await connection.query(`DELETE FROM USERS WHERE id = ${id}`);
+  return userDeleted;
 };
 
 export default { getAll, getUser, deleteUser, addUser, updateUser };
