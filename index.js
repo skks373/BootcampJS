@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import errorsMiddleware from "./src/middleware/errorsMiddleware.js";
-import usersRouter from "./src/routes/userRoutes.js";
+import usersRouter from "./src/routes/user.js";
 
 // Sub router creation
 const router = express.Router();
