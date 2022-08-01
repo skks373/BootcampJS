@@ -4,8 +4,10 @@ import bodyParser from "body-parser";
 import errorsMiddleware from "./src/middleware/errorsMiddleware.js";
 import usersRouter from "./src/routes/userRoutes.js";
 
+// Sub router creation
 const router = express.Router();
 
+// Linked routes
 router.route('/node')
   .get((req, res) => {
     res.send('Course node GET')
@@ -20,14 +22,11 @@ router.route('/node')
     res.send('Course node DELETE')
   })
 
+// Match all types of requests (GET, POST, PUT, ...)
 router.all('/react', (req, res) => {
   res.send('We are not doing this now')
 })
 
-router.get('/test', (req, res, next) => {
-  console.log('Another');
-  res.send('Success')
-})
 
 dotenv.config();
 
@@ -40,6 +39,7 @@ app.get("/", (req, res) => {
   res.json({ message: "ok" });
 });
 
+// Link router to app
 app.use('/courses', router);
 
 app.use("/users", usersRouter);
