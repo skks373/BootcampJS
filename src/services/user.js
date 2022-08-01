@@ -16,19 +16,23 @@ const getUser = async (id) => {
     return user;
 };
 
-const addUser = async (userInfo) => {
+const addUser = async (name) => {
     const user = await prisma.user.create({
-        data: { ...userInfo }
+        data: {
+            name
+        }
     });
     return user;
 };
 
-const updateUser = async (id, userInfo) => {
+const updateUser = async (id, name) => {
     const user = await prisma.user.update({
         where: {
-            id: id
+            id
         },
-        data: { ...userInfo }
+        data: {
+            name
+        }
     })
     return user;
 };

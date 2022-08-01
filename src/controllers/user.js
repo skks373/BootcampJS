@@ -4,6 +4,7 @@ const getUsers = async (req, res) => {
     try {
         res.json(await userServices.getAll());
     } catch (err) {
+        console.log(err)
         console.error(`Error while getting users`);
         res.status(500).send('Server error')
     }
@@ -31,6 +32,7 @@ const addUser = async (req, res) => {
         const newUser = await userServices.addUser(req.body.name);
         res.json(newUser);
     } catch (err) {
+        console.log(err)
         console.error(`Error while adding user`);
         res.status(500).send('Server error');
     }
@@ -38,8 +40,8 @@ const addUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-
-        const user = await userServices.getUser(req.params.id);
+        const id = req.params.id
+        const user = await userServices.getUser(id);
 
         if (!user) {
             res.status(404).send("No user found");
@@ -49,6 +51,7 @@ const updateUser = async (req, res) => {
         await userServices.updateUser(id, req.body.name);
         res.send("User updated");
     } catch (err) {
+        console.log(err);
         console.error(`Error while updating user`);
         res.status(500).send('Server error');
     }
