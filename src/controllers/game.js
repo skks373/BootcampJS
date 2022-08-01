@@ -4,9 +4,7 @@ const getGames = async (req, res) => {
     try {
         res.json(await gamesService.getAll());
     } catch (err) {
-        console.log(err)
-        console.error(`Error while getting games`);
-        res.status(500).send('Server error')
+        next(err);
     }
 };
 
@@ -22,19 +20,16 @@ const getGame = async (req, res) => {
 
         res.json(existingGame);
     } catch (err) {
-        console.error(`Error while getting game`);
-        res.status(500).send('Server error')
+        next(err);
     }
 };
 
-const createGame = async (req, res) => {
+const createGame = async (req, res, next) => {
     try {
         const newGame = await gamesService.createGame(req.body.uid);
         res.json(newGame);
     } catch (err) {
-        console.log(err)
-        console.error(`Error while creating game`);
-        res.status(500).send('Server error');
+        next(err);
     }
 };
 
@@ -43,9 +38,7 @@ const updateGame = async (req, res) => {
         const updatedGame = await gamesService.updateGame(id, req.body.playerId, xPos, yPos);
         res.send(updatedGame);
     } catch (err) {
-        console.log(err);
-        console.error(`Error while updating game`);
-        res.status(500).send('Server error');
+        next(err);
     }
 };
 
@@ -54,9 +47,7 @@ const addOpponnent = async (req, res) => {
         const updatedGame = await gamesService.addOpponnent(id, req.body.opponnentId);
         res.send(updatedGame);
     } catch (err) {
-        console.log(err);
-        console.error(`Error while updating game`);
-        res.status(500).send('Server error');
+        next(err);
     }
 };
 
@@ -65,8 +56,7 @@ const deleteGame = async (req, res) => {
         await gamesService.deleteGame(req.params.id);
         res.send("Game deleted");
     } catch (err) {
-        console.error(`Error while deleting game`);
-        res.status(500).send('Server error');
+        next(err);
     }
 };
 

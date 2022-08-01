@@ -19,7 +19,7 @@ const getGame = async (id) => {
 const createGame = async (ownerId) => {
     const existingUser = await prisma.user.findUnique({
         where: {
-            id
+            id: ownerId
         }
     });
     if (!existingUser) {
@@ -30,7 +30,7 @@ const createGame = async (ownerId) => {
     const game = await prisma.game.create({
         data: {
             uid: existingUser.id,
-            ownerSymbol: Math.round(Math.random())
+            ownerSymbol: Math.round(Math.random()) === 0 ? false : true
         }
     });
     return game;
