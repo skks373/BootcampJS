@@ -1,6 +1,6 @@
 import userServices from "../services/user.js";
 
-const getUsers = async (req, res) => {
+const getUsers = async (req, res, next) => {
     try {
         res.json(await userServices.getAll());
     } catch (err) {
@@ -8,7 +8,7 @@ const getUsers = async (req, res) => {
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
     try {
 
         const existingUser = await userServices.getUser(req.params.id);
@@ -24,7 +24,7 @@ const getUser = async (req, res) => {
     }
 };
 
-const addUser = async (req, res) => {
+const addUser = async (req, res, next) => {
     try {
         const newUser = await userServices.addUser(req.body.name);
         res.json(newUser);
@@ -33,7 +33,7 @@ const addUser = async (req, res) => {
     }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     try {
         const id = req.params.id
         const user = await userServices.getUser(id);
@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         await userServices.deleteUser(req.params.id);
         res.send("User deleted");

@@ -56,7 +56,7 @@ const updateGame = async (id, playerId, xPos, yPos) => {
     return true;
 };
 
-const addOpponnent = async (id, opponentId) => {
+const addOpponent = async (id, opponentId) => {
     const existingGame = await prisma.game.findUnique({
         where: {
             id
@@ -77,7 +77,10 @@ const addOpponnent = async (id, opponentId) => {
         }
     });
 
-    if (!existingUser || existingUser.id === existingGame.ownerId) {
+    console.log(existingGame)
+    console.log(existingUser)
+
+    if (!existingUser || existingUser.id === existingGame.uid) {
         throw new Error("Invalid user");
     }
 
@@ -86,7 +89,7 @@ const addOpponnent = async (id, opponentId) => {
             id
         },
         data: {
-            ownerId: existingUser.id
+            opponentId: existingUser.id
         }
     });
 
@@ -102,4 +105,4 @@ const deleteGame = async (id) => {
     return game;
 };
 
-export default { getAll, getGame, createGame, deleteGame, updateGame, addOpponnent };
+export default { getAll, getGame, createGame, deleteGame, updateGame, addOpponent };

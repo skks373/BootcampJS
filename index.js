@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import errorsMiddleware from "./src/middleware/errorsMiddleware.js";
-import usersRouter from "./src/routes/user.js";
+import userRouter from "./src/routes/user.js";
+import gameRouter from "./src/routes/game.js";
 
 // Sub router creation
 const router = express.Router();
@@ -42,7 +43,8 @@ app.get("/", (req, res) => {
 // Link router to app
 app.use('/courses', router);
 
-app.use("/users", usersRouter);
+app.use("/users", userRouter);
+app.use("/games", gameRouter);
 
 app.use(errorsMiddleware);
 

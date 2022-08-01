@@ -1,6 +1,6 @@
 import gamesService from "../services/game.js";
 
-const getGames = async (req, res) => {
+const getGames = async (req, res, next) => {
     try {
         res.json(await gamesService.getAll());
     } catch (err) {
@@ -8,7 +8,7 @@ const getGames = async (req, res) => {
     }
 };
 
-const getGame = async (req, res) => {
+const getGame = async (req, res, next) => {
     try {
 
         const existingGame = await gamesService.getGame(req.params.id);
@@ -33,25 +33,25 @@ const createGame = async (req, res, next) => {
     }
 };
 
-const updateGame = async (req, res) => {
+const updateGame = async (req, res, next) => {
     try {
-        const updatedGame = await gamesService.updateGame(id, req.body.playerId, xPos, yPos);
+        const updatedGame = await gamesService.updateGame(req.params.id, req.body.playerId, xPos, yPos);
         res.send(updatedGame);
     } catch (err) {
         next(err);
     }
 };
 
-const addOpponnent = async (req, res) => {
+const addOpponent = async (req, res, next) => {
     try {
-        const updatedGame = await gamesService.addOpponnent(id, req.body.opponnentId);
+        const updatedGame = await gamesService.addOpponent(req.params.id, req.body.opponentId);
         res.send(updatedGame);
     } catch (err) {
         next(err);
     }
 };
 
-const deleteGame = async (req, res) => {
+const deleteGame = async (req, res, next) => {
     try {
         await gamesService.deleteGame(req.params.id);
         res.send("Game deleted");
@@ -60,4 +60,4 @@ const deleteGame = async (req, res) => {
     }
 };
 
-export default { getGames, getGame, createGame, updateGame, deleteGame, addOpponnent };
+export default { getGames, getGame, createGame, updateGame, deleteGame, addOpponent };
