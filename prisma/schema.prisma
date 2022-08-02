@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
@@ -28,11 +29,11 @@ model Game {
   updatedAt   DateTime @default(now())
   status      Status   @default(PENDING)
   uid         String
-  user        User     @relation("uid", fields: [uid], references: [id])
+  user        User     @relation("uid", fields: [uid], references: [id], onDelete: Cascade)
   opponentId  String?
-  opponent    User?    @relation("opponent", fields: [opponentId], references: [id])
+  opponent    User?    @relation("opponent", fields: [opponentId], references: [id], onDelete: SetNull)
   winnerId    String?
-  winner      User?    @relation("winner", fields: [winnerId], references: [id])
+  winner      User?    @relation("winner", fields: [winnerId], references: [id], onDelete: SetNull)
   ownerSymbol Boolean
   board       Json     @default("[-1, -1, -1, -1, -1, -1, -1, -1, -1]")
 
