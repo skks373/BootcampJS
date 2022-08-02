@@ -10,7 +10,6 @@ export const computeSymbol = (playerId, ownerId, ownerSymbol) => {
 }
 
 export const verifyGame = (board, ownerSymbol, ownerId, opponentId) => {
-    console.log(board)
     const ownerValue = ownerSymbol ? 1 : 0;
     // Check horizontal
     if ((board[0] == board[1] == board[2]) && board[0] != -1) {

@@ -53,8 +53,6 @@ const updateGame = async (id, playerId, xPos, yPos) => {
     }
 
     const boardPosition = computeBoardPosition(xPos, yPos);
-    console.log(boardPosition, " ", 4)
-    console.log(existingGame.board[4])
     if (parseInt(existingGame.board[boardPosition]) !== -1 || boardPosition < 0 || boardPosition > 8) {
         throw new Error("Invalid position");
     }
@@ -102,9 +100,6 @@ const addOpponent = async (id, opponentId) => {
             id: opponentId
         }
     });
-
-    console.log(existingGame)
-    console.log(existingUser)
 
     if (!existingUser || existingUser.id === existingGame.uid) {
         throw new Error("Invalid user");
