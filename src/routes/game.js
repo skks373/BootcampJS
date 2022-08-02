@@ -16,8 +16,8 @@ router.route('/:id')
     .get(requestMiddleware, gamesController.getGame)
     .put([
         check("playerId", "No player provided").exists(),
-        check("xPos", "Invalid move").exists().isInt({ min: 0, max: 2 }),
-        check("yPos", "Invalid move").exists().isInt({ min: 0, max: 2 })
+        check("xPos", "Invalid move").isInt({ min: 0, max: 2 }),
+        check("yPos", "Invalid move").isInt({ min: 0, max: 2 })
     ], validationMiddleware, gamesController.updateGame)
     .delete(gamesController.deleteGame)
 

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { computeBoardPosition, computeSymbol, verifyGame } from "../utils/game.js";
 
 const prisma = new PrismaClient();
 
@@ -43,17 +44,42 @@ const updateGame = async (id, playerId, xPos, yPos) => {
         }
     });
 
-    if (!existingGame) {
-        throw new Error("Invalid game id");
+    if (!existingGame || !existingGame.opponentId) {
+        throw new Error("Invalid game - does not exist or no opponent");
     }
 
     if (existingGame.status === "FINISHED") {
         throw new Error("The game is already finished");
     }
 
-    console.log(existingGame.board);
+    const boardPosition = computeBoardPosition(xPos, yPos);
+    console.log(boardPosition, " ", 4)
+    console.log(existingGame.board[4])
+    if (parseInt(existingGame.board[boardPosition]) !== -1 || boardPosition < 0 || boardPosition > 8) {
+        throw new Error("Invalid position");
+    }
 
-    return true;
+    if (existingGame.uid !== playerId && existingGame.opponentId !== playerId) {
+        throw new Error("Invalid player id");
+    }
+
+    const playerSymbol = computeSymbol(playerId, existingGame.uid, existingGame.ownerSymbol);
+
+    const board = [...existingGame.board];
+    board[boardPosition] = playerSymbol
+    const isGameFinished = verifyGame(board, existingGame.ownerSymbol, existingGame.uid, existingGame.opponentId);
+    const updatedGame = await prisma.game.update({
+        where: {
+            id
+        },
+        data: {
+            board,
+            status: isGameFinished.finished ? "FINISHED" : "ACTIVE",
+            winnerId: isGameFinished.finished && isGameFinished.winner !== "tie" ? isGameFinished.winner : null
+        }
+    })
+
+    return updatedGame
 };
 
 const addOpponent = async (id, opponentId) => {

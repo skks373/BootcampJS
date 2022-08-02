@@ -35,7 +35,7 @@ const createGame = async (req, res, next) => {
 
 const updateGame = async (req, res, next) => {
     try {
-        const updatedGame = await gamesService.updateGame(req.params.id, req.body.playerId, xPos, yPos);
+        const updatedGame = await gamesService.updateGame(req.params.id, req.body.playerId, parseInt(req.body.xPos), parseInt(req.body.yPos));
         res.send(updatedGame);
     } catch (err) {
         next(err);
