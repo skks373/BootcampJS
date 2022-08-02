@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
@@ -18,7 +18,7 @@ model User {
   personalGames Game[]   @relation("uid")
   inviteGames   Game[]   @relation("opponent")
   winnerGames   Game[]   @relation("winner")
-  name          String
+  name          String   @unique
 
   @@map("users")
 }

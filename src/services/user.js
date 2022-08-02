@@ -11,6 +11,10 @@ const getUser = async (id) => {
     const user = await prisma.user.findUnique({
         where: {
             id
+        },
+        include: {
+            personalGames: true,
+            inviteGames: true
         }
     })
     return user;

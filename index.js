@@ -16,12 +16,6 @@ router.route('/node')
   .post((req, res) => {
     res.send('Course node POST')
   })
-  .put((req, res) => {
-    res.send('Course node PUT')
-  })
-  .delete((req, res) => {
-    res.send('Course node DELETE')
-  })
 
 // Match all types of requests (GET, POST, PUT, ...)
 router.all('/react', (req, res) => {
