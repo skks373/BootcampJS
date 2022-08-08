@@ -36,6 +36,7 @@ model Game {
   winner      User?    @relation("winner", fields: [winnerId], references: [id], onDelete: SetNull)
   ownerSymbol Boolean
   board       Json     @default("[-1, -1, -1, -1, -1, -1, -1, -1, -1]")
+  name        String? 
 
   @@map("games")
 }

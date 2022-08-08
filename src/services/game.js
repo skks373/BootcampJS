@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { computeBoardPosition, computeSymbol, verifyGame } from "../utils/game.js";
 
+import axios from "axios";
+
 const prisma = new PrismaClient();
 
 const getAll = async () => {
@@ -11,13 +13,35 @@ const getAll = async () => {
 const getGame = async (id) => {
     const game = await prisma.game.findUnique({
         where: {
-            id
+            id: ownerId,
+            name: "fixed Name"
         }
     })
     return game;
 };
 
 const createGame = async (ownerId) => {
+
+    let pr1 = new Promise((res, rej) => {
+        setTimeout(res, 5000)
+        console.log("1")
+    })
+    let pr2 = new Promise((res, rej) => {
+        setTimeout(() => rej("motiv"), 0)
+        console.log("2")
+    })
+
+    const results =  await Promise.allSettled[pr1,pr2]
+
+
+    console.log(results);
+
+
+    const names = await axios("https://random-word-api.herokuapp.com/word");
+    
+    //console.log(names.data);
+
+
     const existingUser = await prisma.user.findUnique({
         where: {
             id: ownerId
